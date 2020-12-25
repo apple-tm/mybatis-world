@@ -32,4 +32,106 @@
         SELECT * FROM STUDENTS WHERE id = #{id};
     </select>
 
+    <!--查询student表所有-->
+    <select id="findAll" resultMap="studentMap">
+        SELECT * FROM STUDENTS;
+    </select>
+
+    <!--根据id删除-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM STUDENTS WHERE id = #{id};
+    </delete>
+
+    <!--修改-->
+    <update id="update" parameterType="com.example.mybatis01.entity.Student">
+        update students set name=#{name},sal=#{sal} where id=#{id};
+    </update>
+
+    <!--分页-->
+    <select id="pagination" parameterType="map" resultMap="studentMap">
+        SELECT * FROM STUDENTS LIMIT #{start},#{end}
+    </select>
+
+    <!--动态SQL-->
+    <select id="findByCondition" resultMap="studentMap" parameterType="map">
+
+        select * from students
+
+        <where>
+            <if test="name!=null">
+                and name=#{name}
+            </if>
+            <if test="sal!=null">
+                and sal &lt; #{sal}
+            </if>
+        </where>
+
+    </select>
+
+    <update id="updateByConditions" parameterType="map">
+        update students
+        <set>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="sal!=null">
+                sal = #{sal},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByConditions" parameterType="int">
+        delete from students where id in
+        <foreach collection="array" open="(" close=")" separator="," item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <sql id="key">
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+
+            <if test="id!=null">
+                name,
+            </if>
+
+            <if test="id!=null">
+                sal,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="value">
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+
+            <if test="id!=null">
+                #{name},
+            </if>
+
+            <if test="id!=null">
+                #{sal},
+            </if>
+        </trim>
+    </sql>
+
+
+    <!--动态插入-->
+    <insert id="insertByConditions" parameterType="com.example.mybatis01.entity.Student">
+
+        insert into students (<include refid="key"/>) values
+        (<include refid="value"/>)
+
+    </insert>
+
+
+
+
+
+
 </mapper>
