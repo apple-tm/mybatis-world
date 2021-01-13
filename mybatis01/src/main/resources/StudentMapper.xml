@@ -28,8 +28,8 @@
 		查询根据id
 		resultMap这个属性代表是返回值类型，返回值的类型是Student，就是上面实体类型
 	-->
-    <select id="findById" parameterType="int" resultMap="studentMap">
-        SELECT * FROM STUDENTS WHERE id = #{id};
+    <select id="findById" parameterType="java.lang.String" resultMap="studentMap">
+        SELECT * FROM STUDENTS WHERE `name` = ${name} limit 1;
     </select>
 
     <!--查询student表所有-->
@@ -128,10 +128,5 @@
         (<include refid="value"/>)
 
     </insert>
-
-
-
-
-
 
 </mapper>
