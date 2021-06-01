@@ -16,20 +16,20 @@
              column属性：表的字段名
         -->
         <id property="id" column="id"/>
-        <result property="name" column="name"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="sal" column="sal"/>
     </resultMap>
 
-    <insert id="add" parameterType="com.example.mybatis01.entity.Student">
-        INSERT INTO STUDENTS (ID, NAME, SAL) VALUES (#{id},#{name},#{sal});
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.example.mybatis01.entity.Student">
+        INSERT INTO STUDENTS (NAME, SAL) VALUES (#{name},#{sal});
     </insert>
 
     <!--
 		查询根据id
 		resultMap这个属性代表是返回值类型，返回值的类型是Student，就是上面实体类型
 	-->
-    <select id="findById" parameterType="java.lang.String" resultMap="studentMap">
-        SELECT * FROM STUDENTS WHERE `name` = ${name} limit 1;
+    <select id="findById" parameterType="hashmap" resultMap="studentMap">
+        SELECT * FROM STUDENTS WHERE `name` = #{name} and `pwd` = ${pwd} limit 1;
     </select>
 
     <!--查询student表所有-->

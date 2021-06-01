@@ -18,8 +18,8 @@ public class StudentMapper {
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         try{
             //映射文件的命名空间.SQL片段的ID，就可以调用对应的映射文件中的SQL
-            sqlSession.insert("StudentID.add", student);
-            //mybatis 默认开启事务
+            int primarykey = sqlSession.insert("StudentID.add", student);
+            //mybatis 默认开启事务 因此我们在完成操作以后，需要我们手动去提交事务！
             sqlSession.commit();
         }catch(Exception e){
             e.printStackTrace();
@@ -30,12 +30,15 @@ public class StudentMapper {
         }
     }
 
-    public Student findById(String name) throws Exception {
+        public Student findById(String name, String pwd) throws Exception {
         //得到连接对象
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("name", name);
+            map.put("pwd", pwd);
         SqlSession sqlSession = MybatisUtil.getSqlSession();
         try{
             //映射文件的命名空间.SQL片段的ID，就可以调用对应的映射文件中的SQL
-            return sqlSession.selectOne("StudentID.findById",name);
+            return sqlSession.selectOne("StudentID.findById",map);
         }catch(Exception e){
             e.printStackTrace();
             sqlSession.rollback();
@@ -47,12 +50,20 @@ public class StudentMapper {
 
     public static void main(String[] args) throws Exception {
         StudentMapper studentMapper = new StudentMapper();
-//        Student student = new Student(20, "ws", 190.1);
-//        studentMapper.add(student);
-        Student student2 = studentMapper.findById("'' or 1=1");
-        Student student3 = studentMapper.findById("'' or 1=1");
-        Student student4 = studentMapper.findById("'' or 1=1");
+        Student student = new Student("wu", 190.1);
+        studentMapper.add(student);
+        // inject 1 or 1=1
+//        Student student2 = studentMapper.findById("wuhai", "1 or 1=1");
+//        Student student21 = studentMapper.findById("wuhai", "1 or 1=1");
+//
+//        if (student2 !=null) {
+//            System.out.println("登录成功");
+//        } else {
+//            System.out.println("登录失败");
+//        }
+//        Student student3 = studentMapper.findById("'' or 1=1");
+//        Student student4 = studentMapper.findById("'' or 1=1");
 
-        System.out.println(student2);
+//        System.out.println(student2);
     }
 }

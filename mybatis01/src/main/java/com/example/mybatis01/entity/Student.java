@@ -6,7 +6,15 @@ public class Student {
     private String name;
     private Double sal;
 
-    public Student(Integer id,String name,Double sal) {
+    public Student() {
+    }
+
+    public Student(String name, Double sal) {
+        this.name = name;
+        this.sal = sal;
+    }
+
+    public Student(Integer id, String name, Double sal) {
         this.id = id;
         this.name = name;
         this.sal = sal;
